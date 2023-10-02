@@ -9,9 +9,7 @@ import { change } from 'redux/filterSlice';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => {
-    return state.contacts;
-  });
+  const contacts = useSelector(state => state.contacts);
   const filter = useSelector(state => state.filter);
 
   const addNewContact = newContact => {
@@ -23,10 +21,7 @@ export const App = () => {
       alert(`${newContact.name} is already in contacts`);
       return;
     }
-    localStorage.setItem(
-      'contacts',
-      JSON.stringify([...contacts, { ...newContact }])
-    );
+
     dispatch(addContact({ ...newContact }));
   };
 
