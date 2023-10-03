@@ -3,6 +3,8 @@ import { FormLayout, Label } from './NewContactForm.styled';
 import * as Yup from 'yup';
 import propTypes from 'prop-types';
 import { Button, TextField } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSilce';
 
 const userSchema = Yup.object({
   name: Yup.string()
@@ -19,12 +21,28 @@ const userSchema = Yup.object({
     .required('Number is a required field'),
 });
 
-export const NewContactForm = ({ addNew }) => {
+export const NewContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
+  const addNewContact = newContact => {
+    const isInContacts = contacts.filter(contact => {
+      return newContact.number === contact.number;
+    }).length;
+
+    if (isInContacts) {
+      alert(`${newContact.name} is already in contacts`);
+      return;
+    }
+
+    dispatch(addContact({ ...newContact }));
+  };
+
   const formik = useFormik({
     initialValues: { name: '', number: '' },
     validationSchema: userSchema,
     onSubmit: values => {
-      addNew(values);
+      addNewContact(values);
     },
   });
 

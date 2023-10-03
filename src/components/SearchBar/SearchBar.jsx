@@ -1,7 +1,14 @@
 import propTypes from 'prop-types';
 import { TextField } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { change } from 'redux/filterSlice';
 
-export const SearchBar = ({ onSearch }) => {
+export const SearchBar = () => {
+  const dispatch = useDispatch();
+
+  const onSearch = value => {
+    dispatch(change(value));
+  };
   return (
     <div>
       <label>
