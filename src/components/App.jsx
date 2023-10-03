@@ -17,12 +17,12 @@ export const App = () => {
 
   return (
     <Container>
+      <h1>PhoneBook</h1>
+      <NewContactForm />
       {!visibleContacts.length ? (
         <p>There is no contacts</p>
       ) : (
         <>
-          <h1>PhoneBook</h1>
-          <NewContactForm />
           <h2>Contacts</h2>
           <SearchBar />
           <ContactsList />
