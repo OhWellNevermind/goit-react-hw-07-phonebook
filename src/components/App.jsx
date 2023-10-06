@@ -1,31 +1,43 @@
+import {
+  fetchContacts,
+  selectError,
+  selectIsLoading,
+  selectVisibleContacts,
+} from 'redux/contactsSilce';
 import { ContactsList } from './ContactsList/ContactsList';
 import { NewContactForm } from './NewContactForm/NewContactForm';
 import { SearchBar } from './SearchBar/SearchBar';
 import { Container } from '@mui/material';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const App = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+  const visibleContacts = useSelector(selectVisibleContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
-  const visibleContacts = useMemo(() => {
-    return contacts.filter(contact => {
-      return contact.name.toLowerCase().includes(filter?.toLowerCase());
-    });
-  }, [contacts, filter]);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <Container>
       <h1>PhoneBook</h1>
-      <NewContactForm />
-      {!visibleContacts.length ? (
-        <p>There is no contacts</p>
+      {isLoading && !error ? (
+        <p>Loading...</p>
       ) : (
         <>
-          <h2>Contacts</h2>
+          <NewContactForm />
           <SearchBar />
-          <ContactsList />
+          {!visibleContacts.length ? (
+            <p>There is no contacts</p>
+          ) : (
+            <>
+              <h2>Contacts</h2>
+              <ContactsList />
+            </>
+          )}
         </>
       )}
     </Container>

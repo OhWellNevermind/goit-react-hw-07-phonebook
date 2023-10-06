@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import propTypes from 'prop-types';
 import { Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSilce';
+import { addContact, selectContacts } from 'redux/contactsSilce';
 
 const userSchema = Yup.object({
   name: Yup.string()
@@ -22,12 +22,12 @@ const userSchema = Yup.object({
 });
 
 export const NewContactForm = () => {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const addNewContact = newContact => {
     const isInContacts = contacts.filter(contact => {
-      return newContact.number === contact.number;
+      return newContact.number === contact.phone;
     }).length;
 
     if (isInContacts) {
